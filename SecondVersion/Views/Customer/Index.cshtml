@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Core.Models.Customer>
+
+<p>
+    <span></span>
+</p>
+<p>
+    
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CustomerModal" onclick="clearTextBox()">Add New Customer</button><br /><br />
+</p>
+
+<br /><br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerAddress)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="DataList"></tbody>
+   
+</table>
+<div class="modal fade" id="CustomerModal" tabindex="-1" role="dialog" aria-labelledby="CustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="CustomerModalLabel">Add Customer</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="editor-label">
+                            Customer Name
+                        </div>
+
+                        <div class="editor-label">
+                            <input type="text" id="txtCustomerName" /><label id="lblCustomerId" style="visibility:hidden"></label>
+                            <span id="Err_CustomerName" class="field-validation-valid text-danger" data-valmsg-for="CustomerName" data-valmsg-replace="true"></span>
+
+                        </div>
+
+                        <div class="editor-label">
+                            Customer Address
+                        </div>
+                        <div class="editor-label">
+                            <input type="text" id="txtCustomerAddress" />
+                            <span id="Err_CustomerAddress" class="field-validation-valid text-danger" data-valmsg-for="CustomerAddress" data-valmsg-replace="true"></span>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CustomerviewModal" tabindex="-1" role="dialog" aria-labelledby="CustomerModalViewLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>       
+                <h4 class="modal-title" id="CustomerModalLabel">Customer Details</h4>         
+            </div>
+            <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>
+                        Customer Id
+                    </dt>
+
+                    <dd>
+                        <label id="lblViewCustomerId">11</label>
+                        
+                    </dd>
+
+                    <dt>
+                        Customer Name
+                    </dt>
+
+                    <dd>
+                        <label id="lblViewCustomerName" >11</label>
+                       
+                    </dd>
+
+                    <dt>
+                        Customer Address
+                    </dt>
+
+                    <dd>
+                        <label id="lblViewCustomerAddress">11</label>
+                        
+                    </dd>
+
+                </dl>
+
+
+               
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+@Content.Script("customer.js", Url)
+
+}
+

@@ -1,0 +1,234 @@
+﻿@model IEnumerable<Core.Models.Customer>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Customer</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerAddress)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:  Customer">
+        <tr id="ProductTable">
+            <td><span data-bind="text:  CustomerName"></span></td>
+            <td><span data-bind="text:  CustomerAddress"></span></td>           
+        </tr>
+    </tbody>
+</table>
+@*<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" data-bind="with : SelectedCustomer">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Add Customer</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="editor-label">
+                            Customer Name
+                        </div>
+                        <div class="editor-label" data-bind="css: { error: CustomerName.hasError }">
+                            <input type="text" id='txtName' data-bind="value: CustomerName" />
+                            <span class="field-validation-valid text-danger" data-bind='visible: CustomerName.Errors, text: CustomerName.message'> </span>
+                        </div>
+                        <div class="editor-label">
+                            Customer Address
+                        </div>
+                        <div class="editor-label">
+                            <input type="text" id="txtAddress" data-bind="value: CustomerAddress" />
+                           
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bind="click: $parent.Save" id="btnAdd">Add</button>
+                <button type="button" class="btn btn-primary" id="btnUpdate" data-bind="click: $parent.Update" style="display:none;">Update</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+@*@section Scripts {
+    @Content.Script("knockout-2.0.0.js", Url)
+    @Content.Script("knockout-2.0.0.debug.js", Url)
+}*@
+
+
+
+
+
+
+<script type="text/javascript">
+    function CustomerModal(data)
+    {
+        console.log("CustomerModal", data);
+        var self = this;
+        self.CustomerId = ko.observable(data.CustomerId);
+        self.CustomerName = ko.observable(data.CustomerName).extend({
+            required: {
+                params: true,
+                message: "Please enter Name"
+            },
+        });
+        self.CustomerAddress = ko.observable(data.CustomerAddress);
+        //self.Errors = ko.validation.group([self.CustomerName]);
+        //self.errors = ko.validation.group(self, { deep: true });
+
+        //self.IsValid = ko.computed(function () {
+        //return self.Errors().length == 0;
+        //});
+
+    }
+    var newCustomer =
+        {
+            CustomerId: 0,
+            CustomerName: '',
+            CustomerAddress: '',
+            Errors:'',
+            IsValid: true,
+        }
+    var CustomerViewModel = function () {
+        var self = this;
+        self.SelectedCustomer = ko.observable();
+        self.Customer = ko.observableArray([]);
+
+        //self.newCustomer = function () {
+        //    self.SelectedCustomer(new CustomerModal(newCustomer));
+        //    //$('#btnUpdate').hide();
+        //    //$('#btnAdd').show();
+        //    //$('#myModalLabel').html("Add Customer");
+        //}
+        LoadData();
+        function LoadData() {
+            //$('#myModal').modal('hide');
+            debugger;
+            $.ajax({
+                type: "GET",
+                url: "/Customers/GetAllCustomer",
+                success: function (result) {
+                    //alert(result);
+                    result.forEach(function (element) {
+                        console.log("LoadData()",element);
+                        self.Customer.push(new CustomerModal(element));
+                    });
+                    self.Customer(result);
+                    
+                },
+                error: function error() {
+                    alert( error.statusText);
+                }
+            });
+        }
+
+
+        //self.Save = function (data) {
+        //    if (!data.IsValid()) {
+
+        //        data.Errors.showAllMessages();
+        //        return;
+        //    };
+        //    $.ajax({
+        //        url: "/Customer/Create",
+        //        type: "POST",
+        //        contentType: "application/json;charset=UTF-8",
+        //        dataType: "json",
+        //        data: ko.toJSON(data),
+        //        success: function (result) {
+        //            if (result.Valid) {
+        //                LoadData();
+        //            }
+
+        //        }
+        //    }).fail(
+        //        function (xhr, textStatus, err) {
+        //            alert(err);
+        //        }
+        //        )
+
+
+        //};
+
+        //self.Update = function (data) {
+        //    $.ajax({
+        //        url: "/Customer/Edit",
+        //        type: "POST",
+        //        contentType: "application/json;charset=UTF-8",
+        //        dataType: "json",
+        //        data: ko.toJSON(data),
+        //        success: function (result) {
+        //            if (result.Valid) {
+        //                LoadData();
+        //            }
+
+        //        }
+        //    }).fail(
+        //        function (xhr, textStatus, err) {
+        //            alert(err);
+        //        }
+        //        )
+
+
+        //};
+
+        //self.EditModal = function (data) {
+        //    //debugger;
+        //    self.SelectedCustomer(data);
+        //    $('#myModal').modal('show');
+        //    $('#btnUpdate').show();
+        //    $('#btnAdd').hide();
+        //    $('#myModalLabel').html("Edit Customer");
+
+        //};
+        //self.Delete = function (data) {
+        //    //debugger;
+        //    var ans = confirm("Are you sure you want delete this Item?");
+        //    if (!ans) {
+        //        return;
+        //    }
+        //    $.ajax({
+        //        url: "/Customer/Delete/" + data.CustomerId, // Controller/View
+        //        type: "POST",
+        //        contentType: "application/json;charset=UTF-8",
+        //        dataType: "json",
+
+        //        success: function (result) {
+
+        //                LoadData();
+
+
+        //        }
+        //    }).fail(
+        //        function (xhr, textStatus, err) {
+        //            alert(err);
+        //        }
+        //        )
+
+
+       // };
+
+    }
+
+    ko.applyBindings(new CustomerViewModel());
+</script>
+
+
+
+
+
+
+
+

@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Core.Models.Customer>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Customer</h2>
+<p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-bind="click :$root.newCustomer" data-target="#myModal">Add New  Customer</button><br /><br />
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerAddress)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:  Customer">
+        <tr id="ProductTable">
+            <td><span data-bind="text:  CustomerName"></span></td>
+            <td><span data-bind="text:  CustomerAddress"></span></td> 
+            <td><a href="#" data-bind="click: $root.EditModal.bind($root)">Edit</a> | <a href="#" data-bind="click: $root.Delete.bind($root)">Delete</a></td>          
+        </tr>
+    </tbody>
+</table>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" data-bind="with : SelectedCustomer">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Add Customer</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="editor-label">
+                            Customer Name
+                        </div>
+                        <div class="editor-label" data-bind="css: { error: CustomerName.hasError }">
+                            <input type="text" id='txtName' data-bind="value: CustomerName" />
+                            <span class="field-validation-valid text-danger" data-bind='visible: CustomerName.Errors, text: CustomerName.message'> </span>
+                        </div>
+                        <div class="editor-label">
+                            Customer Address
+                        </div>
+                        <div class="editor-label">
+                            <input type="text" id="txtAddress" data-bind="value: CustomerAddress" />
+                           
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bind="click: $parent.Save" id="btnAdd">Add</button>
+                <button type="button" class="btn btn-primary" id="btnUpdate" data-bind="click: $parent.Update" style="display:none;">Update</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+   @Content.Script("knockout.validation.js", Url)
+     @Content.Script("customerKnockOut.js", Url)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

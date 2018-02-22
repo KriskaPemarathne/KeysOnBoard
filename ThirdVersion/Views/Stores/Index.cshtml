@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Core.Models.Store>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-bind="click :$root.newStore" data-target="#StoreModal">Add New  Store</button><br /><br />
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StoreName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StoreAddress)
+        </th>
+        <th></th>
+    </tr>
+
+    <tbody data-bind="foreach:  Store">
+        <tr id="StoreTable">
+            <td><span data-bind="text:  StoreName"></span></td>
+            <td><span data-bind="text:  StoreAddress"></span></td>
+            <td><a href="#" data-bind="click: $root.EditModal.bind($root)">Edit</a> | <a href="#" data-bind="click: $root.Delete.bind($root)">Delete</a></td>
+        </tr>
+    </tbody>
+
+</table>
+
+<div class="modal fade" id="StoreModal" tabindex="-1" role="dialog" aria-labelledby="StoreModalLabel" aria-hidden="true">
+    <div class="modal-dialog" data-bind="with : SelectedStore">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="StoreModalLabel">Add Store</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="editor-label">
+                            Store Name
+                        </div>
+
+
+                        <div class="editor-label" data-bind="css: { error: StoreName.hasError }">
+                            <input type="text" id='txtName' data-bind="value: StoreName" />
+                            <span class="field-validation-valid text-danger" data-bind='visible: StoreName.Errors, text: StoreName.message'> </span>
+                        </div>
+                        <div class="editor-label">
+                            Store Address
+                        </div>
+                        <div class="editor-label">
+                            <input type="text" id="txtStoreAddress" data-bind="value: StoreAddress" />
+                            <span id="Err_StoreAddress" class="field-validation-valid text-danger" ata-bind='visible: ProducAddress.Errors, text: StoreAddress.message'></span>
+
+                        </div>
+                        <div class="editor-label" id="StoreId">
+                            <label id="lblStoreId" style="visibility:hidden"></label>
+
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAdd" data-bind="click: $parent.Add">Add</button>
+                <button type="button" class="btn btn-primary" id="btnUpdate" data-bind="click: $parent.Update" style="display:none;">Update</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+@Content.Script("moment.min.js", Url)
+@Content.Script("knockout.validation.js", Url)
+@Content.Script("storeKnockOut.js", Url)
+
+}
+
+
+
+
+
+
+

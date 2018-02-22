@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Core.Models.ProductSoldDetails>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-bind="click :$root.newProductSold" data-target="#ProductSoldModal">Add New  Sale</button><br /><br />
+</p>
+<table class="table">
+    <thead>
+        <tr>          
+
+            <th>
+                @Html.DisplayNameFor(model => model.StoreName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoldDate)
+            </th>
+            <th></th>
+        </tr>
+</thead>
+<tbody data-bind="foreach:  ProductSold">
+    <tr>
+        <td><span data-bind="text:  StoreName"></span></td>
+        <td><span data-bind="text:  ProductName"></span></td>
+        <td><span data-bind="text:  CustomerName"></span></td>
+        <td><span data-bind="text:  Amount"></span></td>
+        <td>
+            <time data-bind="date: SoldDate, dateFormat: 'YYYY-MM-DD'"></time>
+        </td>
+        <td><a href="#" data-bind="click: $root.EditModal.bind($root)">Edit</a> | <a href="#" data-bind="click: $root.Delete.bind($root)">Delete</a></td>
+    </tr>
+</tbody>
+</table>
+
+
+
+<div class="modal fade" id="ProductSoldModal" tabindex="-1" role="dialog" aria-labelledby="ProductSoldModalLabel" aria-hidden="true">
+    <div class="modal-dialog" data-bind="with : SelectedSale">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="ProductSoldModalLabel">Add Sale</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="editor-label">
+                            Select Customer
+                        </div>
+                        <div class="editor-label">
+                            <select class="form-control" data-bind="options: $parent.CustomerList,optionsText: 'CustomerName',value:$parent.SelectedCustomer,optionsCaption: 'Select Customer'"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="editor-label">
+                            Select Store
+                        </div>
+                        <div class="editor-label">
+                            <select class="form-control" data-bind="options: $parent.StoreList,optionsText: 'StoreName',value:$parent.SelectedStore,optionsCaption: 'Select Store'"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="editor-label">
+                            Select Product
+                        </div>
+                        <div class="editor-label">
+                            <select class="form-control" data-bind="options: $parent.ProductList,optionsText: 'ProductName',value:$parent.SelectedProduct,optionsCaption: 'Select Product'"></select>
+                        </div>
+                        <div class="editor-label">
+                            Select Date
+                        </div>
+                        <div class="editor-label">
+                            <input type="date" id="txtDate" data-bind="value : SoldDate" />
+                            
+
+                        </div>
+                        @*<div class="editor-label">                          
+
+                            <input  data-bind="date: $parent.SoldDate"/>
+
+                        </div>*@
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bind="click: $parent.Save" id="btnAdd">Add</button>
+                <button type="button" class="btn btn-primary" id="btnUpdate" data-bind="click: $parent.Update" style="display:none;">Update</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+@Content.Script("moment.min.js", Url)
+@Content.Script("knockout.validation.js", Url)
+   @Content.Script("productSoldKnockOut.js", Url)
+
+}
